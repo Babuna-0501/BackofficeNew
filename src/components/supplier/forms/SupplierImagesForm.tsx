@@ -5,7 +5,7 @@ import { FunctionComponent, useState } from 'react';
 import UpdateBannerList from '@/components/supplier/sections/UpdateBannerList';
 import { updateSupplierImageAction } from '@/app/actions/supplier';
 import { toastMessage, tr } from '@/utils';
-import CoreUploadImage from '@/components/core/CoreUploadImage';
+import CoreUploadImages from '@/components/core/CoreUploadImages';
 
 interface SupplierImagesFormProps {
   supplier: SupplierType;
@@ -34,46 +34,31 @@ const SupplierImagesForm: FunctionComponent<SupplierImagesFormProps> = ({ suppli
         <div className='grid grid-cols-3 gap-4'>
           <div className='flex flex-col gap-2'>
             <label className='text-xs font-medium'>{tr('Нийлүүлэгчийн лого')}</label>
-
-            <CoreUploadImage
-              image={allImage.logo}
-              setImage={(logo: string) =>
-                setAllImage({
-                  ...allImage,
-                  logo
-                })
-              }
+            <CoreUploadImages
+              images={allImage.logo ? [allImage.logo] : []}
+              setImages={images => setAllImage({ ...allImage, logo: images[0] || '' })}
               className='w-full'
+              maxImages={1}
             />
           </div>
 
           <div className='flex flex-col gap-2'>
             <label className='text-xs font-medium'>{tr('Захиалгын баннер')}</label>
-
-            <CoreUploadImage
-              image={allImage.productBanner}
-              setImage={(productBanner: string) =>
-                setAllImage({
-                  ...allImage,
-                  productBanner
-                })
-              }
+            <CoreUploadImages
+              images={allImage.productBanner ? [allImage.productBanner] : []}
+              setImages={images => setAllImage({ ...allImage, productBanner: images[0] || '' })}
               className='w-full'
+              maxImages={1}
             />
           </div>
 
           <div className='flex flex-col gap-2'>
             <label className='text-xs font-medium'>{tr('Нийлүүлэгчийн баннер')}</label>
-
-            <CoreUploadImage
-              image={allImage.infoBanner}
-              setImage={(infoBanner: string) =>
-                setAllImage({
-                  ...allImage,
-                  infoBanner
-                })
-              }
+            <CoreUploadImages
+              images={allImage.infoBanner ? [allImage.infoBanner] : []}
+              setImages={images => setAllImage({ ...allImage, infoBanner: images[0] || '' })}
               className='w-full'
+              maxImages={1}
             />
           </div>
         </div>

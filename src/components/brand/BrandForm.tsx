@@ -2,12 +2,12 @@
 
 import { BrandType } from '@/types';
 import { errorMessageMap, isActiveMap } from '@/configs';
-import { Form, Input, Select, SelectItem } from "@heroui/react";
+import { Form, Input, Select, SelectItem } from '@heroui/react';
 import { FunctionComponent, useState } from 'react';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { objectToArray, toastMessage, tr } from '@/utils';
 import { createBrandAction, updateBrandAction } from '@/app/actions/brand';
-import CoreUploadImage from '@/components/core/CoreUploadImage';
+import CoreUploadImages from '@/components/core/CoreUploadImages';
 
 interface BrandFormProps {
   brand?: BrandType;
@@ -76,7 +76,7 @@ const BrandForm: FunctionComponent<BrandFormProps> = ({ brand, supplierId }) => 
       <div className='flex flex-col gap-2'>
         <label className='text-xs font-medium'>{tr('Зураг оруулах')}</label>
 
-        <CoreUploadImage image={image} setImage={setImage} />
+        <CoreUploadImages images={image ? [image] : []} setImages={images => setImage(images[0] || '')} maxImages={1} />
       </div>
 
       <CoreSubmitButton text='Хадгалах' />

@@ -6,7 +6,7 @@ import { Button, Input, Select, SelectItem } from "@heroui/react";
 import { changePathAction } from '@/app/actions/main';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { BackspaceIcon, FunnelIcon } from '@heroicons/react/24/outline';
-import { isActiveMap, isTypeMap } from '@/configs';
+import { isActiveMap } from '@/configs';
 import { useSearchParams } from 'next/navigation';
 
 function FeaturedFilterForm() {
@@ -16,22 +16,18 @@ function FeaturedFilterForm() {
 
   return (
     <Form action='/featured' className='grid grid-cols-6 gap-2 items-end'>
-      <Select
-        aria-label='core'
-        aria-hidden='false'
-        defaultSelectedKeys={[defaultParams.type || '']}
-        name='type'
-        placeholder='--'
-        label='Сонгох'
-        labelPlacement='outside'
-        items={objectToArray(isTypeMap)}
+      <Input
+        type='text'
+        name='sku'
+        defaultValue={defaultParams.sku}
         variant='bordered'
+        labelPlacement='outside'
+        label={tr('Бүтээгдэхүүний SKU')}
+        placeholder={tr('Бүтээгдэхүүний SKU')}
         classNames={{
           label: 'text-xs font-medium'
         }}
-      >
-        {option => <SelectItem key={option.key}>{option.value}</SelectItem>}
-      </Select>
+      />
 
       <Input
         type='text'
@@ -41,6 +37,19 @@ function FeaturedFilterForm() {
         labelPlacement='outside'
         label={tr('Бүтээгдэхүүний нэр')}
         placeholder={tr('Бүтээгдэхүүний нэр')}
+        classNames={{
+          label: 'text-xs font-medium'
+        }}
+      />
+
+      <Input
+        type='text'
+        name='barCode'
+        variant='bordered'
+        defaultValue={defaultParams.barCode}
+        labelPlacement='outside'
+        label={tr('Бүтээгдэхүүний баркод')}
+        placeholder={tr('Бүтээгдэхүүний баркод')}
         classNames={{
           label: 'text-xs font-medium'
         }}
@@ -69,7 +78,7 @@ function FeaturedFilterForm() {
         <Button
           type='reset'
           color='danger'
-          onPress={() => changePathAction('/featured')}
+          onPress={() => changePathAction('/product')}
           endContent={<BackspaceIcon className='w-4 h-4' />}
           className='w-full'
         >

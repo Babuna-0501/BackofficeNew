@@ -12,11 +12,11 @@ import {
   Select,
   SelectItem,
   useDisclosure
-} from "@heroui/react";
+} from '@heroui/react';
 import { FunctionComponent, useState } from 'react';
-import CoreUploadImage from '@/components/core/CoreUploadImage';
 import { SUPPLIER_BANNER_TYPES } from '@/configs';
 import { toast } from 'react-toastify';
+import CoreUploadImages from '@/components/core/CoreUploadImages';
 
 interface AddBrandBannerProps {
   items: BrandType[];
@@ -165,7 +165,12 @@ const AddBrandBanner: FunctionComponent<AddBrandBannerProps> = ({ items, setBann
               </Select>
             ) : null}
 
-            <CoreUploadImage setImage={setSelectedBannerImage} image={selectedBannerImage} className='w-full' />
+            <CoreUploadImages
+              images={selectedBannerImage ? [selectedBannerImage] : []}
+              setImages={images => setSelectedBannerImage(images[0] || '')}
+              className='w-full'
+              maxImages={1}
+            />
           </ModalBody>
           <ModalFooter>
             <Button color='primary' fullWidth onPress={handleAddOrUpdateBanner}>

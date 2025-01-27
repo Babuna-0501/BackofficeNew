@@ -1,7 +1,7 @@
 export const FEATURED_COLUMNS = [
-    { uid: 'id', label: 'id' },
-    { uid: 'isActive', label: 'Төлөв' },
-    { uid: 'supplierId', label: 'supplierId' },
-    { uid: 'priority', label: 'priority' },
-];
+    { uid: 'images', label: 'Зураг' },
+    { uid: 'name', label: 'Бүтээгдэхүүний нэр' },
+    { uid: 'sku', label: 'SKU' },
+    { uid: 'barCode', label: 'Баркод' },
+  ];
   

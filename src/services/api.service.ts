@@ -37,46 +37,15 @@ const createUrl = (endpoint: string, filter?: SearchParamsFilterType): URL => {
 };
 
 async function processResponse<T>(response: Response): Promise<ApiResponseType<T>> {
-  const errorData = {
-    data: [] as T,
-    total: 0,
-    totalPage: 0,
-    currentPage: 0,
+  const successResponse = await response.json();
+
+  return {
+    data: successResponse?.data || successResponse || ([] as T),
+    total: successResponse?.total || 0,
+    totalPage: successResponse?.totalPages || 0,
+    currentPage: successResponse?.currentPage || 0,
     status: response.status
   };
-
-  if (!response.ok) {
-    try {
-      const errorResponse = await response.json();
-
-      return {
-        ...errorData,
-        errors: errorResponse?.errors || [{ message: 'Failed to fetch data.' }]
-      };
-    } catch {
-      return {
-        ...errorData,
-        errors: [{ message: 'Failed to parse error response.' }]
-      };
-    }
-  }
-
-  try {
-    const successResponse = await response.json();
-
-    return {
-      data: successResponse?.data || successResponse || ([] as T),
-      total: successResponse?.total || 0,
-      totalPage: successResponse?.totalPages || 0,
-      currentPage: successResponse?.currentPage || 0,
-      status: response.status
-    };
-  } catch {
-    return {
-      ...errorData,
-      errors: [{ message: 'Алдаа гарлаа амжилттай хадгалсан эсэхийг шалгана уу.' }]
-    };
-  }
 }
 
 async function request<T>(
@@ -94,9 +63,28 @@ async function request<T>(
   const url = createUrl(endpoint, options?.filter);
   const config = createRequestConfig(method, session, options?.body);
 
-  const response = await fetch(url, config);
+  const errorData = {
+    data: [] as T,
+    total: 0,
+    totalPage: 0,
+    currentPage: 0
+  };
 
-  return processResponse<T>(response);
+  try {
+    const response = await fetch(url, config);
+
+    if (!response.ok) {
+      return {
+        ...errorData,
+        status: response.status,
+        errors: [{ message: 'Алдаа гарлаа!' }]
+      };
+    }
+
+    return processResponse<T>(response);
+  } catch (err) {
+    return { ...errorData, errors: [{ message: `Алдаа гарлаа! ${err}` }] };
+  }
 }
 
 export const apiService = {
@@ -170,15 +158,17 @@ export async function uploadImageFetcher(formData: FormData) {
     });
 
     if (!response.ok) {
-      return { message: 'Зураг оруулахад алдаа гарлаа!!!' };
+      const errorMessage =
+        response.status === 400 ? 'Зурагний формат буруу! (jpg, jpeg, png)' : 'Алдаа гарлаа. Дахин оролдоно уу!';
+
+      return { message: errorMessage };
     }
 
     const data = await response.json();
 
     return data;
   } catch (err) {
-    console.error('Error uploading image:', err);
-
-    return { message: 'Зураг оруулахад алдаа гарлаа!!!' };
+    console.log('Error uploading image:', err);
+    return { message: 'Зураг оруулахад алдаа гарлаа!!! (jpg, jpeg, png)' };
   }
 }

@@ -1,13 +1,13 @@
 'use client';
 
 import { objectToArray, replaceUploadingMediaUrl, toastMessage, tr } from '@/utils';
-import { Card, CardBody, Form, Input, Select, SelectItem } from "@heroui/react";
+import { Card, CardBody, Form, Input, Select, SelectItem } from '@heroui/react';
 import { FunctionComponent, useState } from 'react';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { errorMessageMap, isActiveMap, isCheckedMap } from '@/configs';
 import { BrandType, CategoryType, ProductType } from '@/types';
 import { createProductAction, updateProductAction } from '@/app/actions/product';
-import CoreUploadImageList from '@/components/core/CoreUploadImageList';
+import CoreUploadImages from '@/components/core/CoreUploadImages';
 
 interface ProductFormProps {
   product?: ProductType;
@@ -268,7 +268,7 @@ const ProductForm: FunctionComponent<ProductFormProps> = ({ product, supplierId,
           <label className='text-xs font-medium'>{tr('Зураг оруулах')}</label>
 
           <div className='grid grid-cols-2 gap-4 w-full'>
-            <CoreUploadImageList images={images} setImages={setImages} className='w-full h-48' maxImages={4} />
+            <CoreUploadImages images={images} setImages={setImages} className='w-full h-48' maxImages={4} />
           </div>
 
           <CoreSubmitButton text='Хадгалах' className='mt-auto' />
