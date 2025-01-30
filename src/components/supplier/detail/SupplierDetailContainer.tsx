@@ -33,20 +33,9 @@ const SupplierDetailContainer: FunctionComponent<SupplierDetailContainerProps> =
     general: <SupplierGeneralForm supplier={supplier} locations={locations} suppliers={suppliers} />,
     bank: <SupplierBankForm supplier={supplier} />,
     images: <SupplierImagesForm supplier={supplier} brands={brands} />,
-    terms: (
-      <SupplierHtmlForm
-        supplier={supplier}
-        name='termOfService'
-        defaultValue={supplier.termOfService}
-        label='Үйлчилгээний нөхцөл'
-      />
-    ),
-    about: (
-      <SupplierHtmlForm supplier={supplier} name='aboutCompany' defaultValue={supplier.aboutCompany} label='Компаний тухай' />
-    ),
-    cooperation: (
-      <SupplierHtmlForm supplier={supplier} name='cooperation' defaultValue={supplier.cooperation} label='Хамтын ажиллагаа' />
-    )
+    terms: <SupplierHtmlForm supplier={supplier} name='termOfService' label='Үйлчилгээний нөхцөл' />,
+    about: <SupplierHtmlForm supplier={supplier} name='aboutCompany' label='Компаний тухай' />,
+    cooperation: <SupplierHtmlForm supplier={supplier} name='cooperation' label='Хамтын ажиллагаа' />
   };
 
   return (

@@ -6,7 +6,8 @@ import { Button, Input, Select, SelectItem } from "@heroui/react";
 import { changePathAction } from '@/app/actions/main';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { BackspaceIcon, FunnelIcon } from '@heroicons/react/24/outline';
-import { isActiveMap } from '@/configs';
+import CoreCreateButton from '@/components/core/CoreCreateButton';
+import { isActiveMap, isTypeMap } from '@/configs';
 import { useSearchParams } from 'next/navigation';
 
 function FeaturedFilterForm() {
@@ -16,18 +17,22 @@ function FeaturedFilterForm() {
 
   return (
     <Form action='/featured' className='grid grid-cols-6 gap-2 items-end'>
-      <Input
-        type='text'
-        name='sku'
-        defaultValue={defaultParams.sku}
-        variant='bordered'
+      <Select
+        aria-label='core'
+        aria-hidden='false'
+        defaultSelectedKeys={[defaultParams.type || '']}
+        name='type'
+        placeholder='--'
+        label='Сонгох'
         labelPlacement='outside'
-        label={tr('Бүтээгдэхүүний SKU')}
-        placeholder={tr('Бүтээгдэхүүний SKU')}
+        items={objectToArray(isTypeMap)}
+        variant='bordered'
         classNames={{
           label: 'text-xs font-medium'
         }}
-      />
+      >
+        {option => <SelectItem key={option.key}>{option.value}</SelectItem>}
+      </Select>
 
       <Input
         type='text'
@@ -37,19 +42,6 @@ function FeaturedFilterForm() {
         labelPlacement='outside'
         label={tr('Бүтээгдэхүүний нэр')}
         placeholder={tr('Бүтээгдэхүүний нэр')}
-        classNames={{
-          label: 'text-xs font-medium'
-        }}
-      />
-
-      <Input
-        type='text'
-        name='barCode'
-        variant='bordered'
-        defaultValue={defaultParams.barCode}
-        labelPlacement='outside'
-        label={tr('Бүтээгдэхүүний баркод')}
-        placeholder={tr('Бүтээгдэхүүний баркод')}
         classNames={{
           label: 'text-xs font-medium'
         }}
@@ -78,7 +70,7 @@ function FeaturedFilterForm() {
         <Button
           type='reset'
           color='danger'
-          onPress={() => changePathAction('/product')}
+          onPress={() => changePathAction('/featured')}
           endContent={<BackspaceIcon className='w-4 h-4' />}
           className='w-full'
         >

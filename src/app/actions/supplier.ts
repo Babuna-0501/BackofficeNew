@@ -1,9 +1,15 @@
 'use server';
 
-import { createSupplier, updateSupplier } from '@/services';
-import { BankAccountType, FileType } from '@/types';
+import { createSupplier, getSuppliers, updateSupplier } from '@/services';
+import { BankAccountType, FileType, SearchParamsFilterType } from '@/types';
 import { formDataToObject, removeEmptyStringFields } from '@/utils';
 import { revalidatePath } from 'next/cache';
+
+export async function getSuppliersAction(filter: SearchParamsFilterType) {
+  const suppliersData = await getSuppliers(removeEmptyStringFields(filter));
+
+  return { data: suppliersData?.data ?? [], hasMore: suppliersData?.totalPage > suppliersData?.currentPage };
+}
 
 export async function createSupplierAction(formData: FormData) {
   const data = removeEmptyStringFields(formDataToObject(formData));

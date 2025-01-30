@@ -2,7 +2,7 @@
 
 import { searchParamsToObject, tr } from '@/utils';
 import Form from 'next/form';
-import { Button, Input } from "@heroui/react";
+import { Button, Input } from '@heroui/react';
 import { changePathAction } from '@/app/actions/main';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { BackspaceIcon, FunnelIcon } from '@heroicons/react/24/outline';
@@ -30,6 +30,19 @@ function MerchantFilterForm() {
 
       <Input
         type='text'
+        name='name'
+        variant='bordered'
+        defaultValue={defaultParams.name}
+        labelPlacement='outside'
+        label={tr('Харилцагчийн нэр')}
+        placeholder={tr('Харилцагчийн нэр')}
+        classNames={{
+          label: 'text-xs font-medium'
+        }}
+      />
+
+      <Input
+        type='text'
         name='regNo'
         variant='bordered'
         defaultValue={defaultParams.regNo}
@@ -43,38 +56,12 @@ function MerchantFilterForm() {
 
       <Input
         type='text'
-        name='businessName'
-        variant='bordered'
-        defaultValue={defaultParams.businessName}
-        labelPlacement='outside'
-        label={tr('Харилцагчийн нэр')}
-        placeholder={tr('Харилцагчийн нэр')}
-        classNames={{
-          label: 'text-xs font-medium'
-        }}
-      />
-
-      <Input
-        type='text'
         name='phone'
         variant='bordered'
         defaultValue={defaultParams.phone}
         labelPlacement='outside'
         label={tr('Харилцагчийн утас')}
         placeholder={tr('Харилцагчийн утас')}
-        classNames={{
-          label: 'text-xs font-medium'
-        }}
-      />
-
-      <Input
-        type='text'
-        name='name'
-        variant='bordered'
-        defaultValue={defaultParams.name}
-        labelPlacement='outside'
-        label={tr('Салбарын нэр')}
-        placeholder={tr('Салбарын нэр')}
         classNames={{
           label: 'text-xs font-medium'
         }}

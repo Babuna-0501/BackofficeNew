@@ -1,21 +1,32 @@
 import { tr, searchParamsToObject } from '@/utils';
-import { SupplierType } from '@/types';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { FunctionComponent, Key } from 'react';
+import { FunctionComponent, Key, useState } from 'react';
 import { chooseSupplierAction, removeSupplierAction } from '@/app/actions/main';
-import { Autocomplete, AutocompleteItem, AutocompleteSection } from '@heroui/react';
+import { Autocomplete, AutocompleteItem } from '@heroui/react';
 import CoreNotFound from '@/components/core/CoreNotFound';
+import { useInfiniteScroll } from '@heroui/use-infinite-scroll';
+import { useSuppliers } from '@/hooks';
 
 interface CoreSelectSupplierProps {
-  suppliers: SupplierType[];
   supplierId: string;
 }
 
 const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => {
-  const { suppliers, supplierId } = props;
+  const { supplierId } = props;
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { items, hasMore, isLoading, onLoadMore, onSearchValue } = useSuppliers({ fetchDelay: 1500 });
+
+  const [, scrollerRef] = useInfiniteScroll({
+    hasMore,
+    isEnabled: isOpen,
+    shouldUseLoader: false,
+    onLoadMore
+  });
 
   const onSelectionChange = (key: Key | null) => {
     const updatedParams = new URLSearchParams(searchParamsToObject(searchParams));
@@ -51,11 +62,15 @@ const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => 
     <Autocomplete
       className='max-w-xs'
       defaultSelectedKey={supplierId}
-      defaultItems={suppliers}
+      defaultItems={items}
+      isLoading={isLoading}
+      onInputChange={onSearchValue}
       color='primary'
       label={tr('-- Нийлүүлэгч сонгох --')}
       variant='flat'
       radius='none'
+      scrollRef={scrollerRef}
+      onOpenChange={setIsOpen}
       onSelectionChange={onSelectionChange}
       clearButtonProps={{
         onPress: onClear
@@ -68,25 +83,9 @@ const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => 
       }}
     >
       {item => (
-        <AutocompleteSection
-          key={item.id}
-          title={item.name}
-          classNames={{
-            heading: 'flex w-full sticky top-1 z-20 py-1.5 px-2 bg-default-100 shadow-small rounded-small'
-          }}
-        >
-          {item.branches && item.branches.length > 0 ? (
-            item.branches.map(branch => (
-              <AutocompleteItem key={branch.id} className='pl-4'>
-                {branch.name}
-              </AutocompleteItem>
-            ))
-          ) : (
-            <AutocompleteItem key={item.id} className='pl-4'>
-              {item.name}
-            </AutocompleteItem>
-          )}
-        </AutocompleteSection>
+        <AutocompleteItem key={item.id} className='pl-4'>
+          {item.name}
+        </AutocompleteItem>
       )}
     </Autocomplete>
   );

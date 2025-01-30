@@ -11,6 +11,7 @@ const FeaturedPage: FunctionComponent<FeaturedPageProps> = async ({ searchParams
   const filter = await searchParams;
 
   const featuredData = await getFeaturedList(filter);
+  console.log(featuredData);
 
   return (
     <FeaturedBoard

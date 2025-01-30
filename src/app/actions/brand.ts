@@ -2,13 +2,13 @@
 
 import { createBrand, deleteBrand, getBrands, updateBrand } from '@/services';
 import { SearchParamsFilterType } from '@/types';
-import { formDataToObject } from '@/utils';
+import { formDataToObject, removeEmptyStringFields } from '@/utils';
 import { revalidatePath } from 'next/cache';
 
 export async function getBrandsAction(filter: SearchParamsFilterType) {
-  const response = await getBrands(filter);
+  const brandsData = await getBrands(removeEmptyStringFields(filter));
 
-  return response;
+  return { data: brandsData?.data ?? [], hasMore: brandsData?.totalPage > brandsData?.currentPage };
 }
 
 export async function createBrandAction(formData: FormData) {

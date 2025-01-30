@@ -79,30 +79,31 @@ const CoreUploadImages: FunctionComponent<CoreUploadImagesProps> = ({ images, se
         }
 
         return (
-          <div
-            key={index}
-            className={cn(
-              'relative hover:border-primary rounded-md border w-40 h-40 flex items-center justify-center',
-              className
-            )}
-            onMouseEnter={() => setShowXButton(index)}
-            onMouseLeave={() => setShowXButton(null)}
-            onClick={() => handleOpenModal(replaceMediaUrl(imageUrl))}
-          >
-            <div className={cn('w-36 h-36', className)}>
-              <CoreImage src={replaceMediaUrl(imageUrl)} />
-            </div>
-
-            <Button
-              isIconOnly
-              className={`absolute -top-2 -right-2 z-20 ${index === showXButton ? 'flex' : 'hidden'}`}
-              radius='full'
-              size='sm'
-              color='danger'
-              onPress={() => deleteImage(index)}
+          <div key={index} className='relative'>
+            <div
+              className={cn(
+                'hover:border-primary rounded-md border w-40 h-40 flex items-center justify-center overflow-hidden',
+                className
+              )}
+              onMouseEnter={() => setShowXButton(index)}
+              onMouseLeave={() => setShowXButton(null)}
+              onClick={() => handleOpenModal(replaceMediaUrl(imageUrl))}
             >
-              <XMarkIcon className='w-4 h-4' />
-            </Button>
+              <div className={cn('w-36 h-36', className)}>
+                <CoreImage src={replaceMediaUrl(imageUrl)} />
+              </div>
+
+              <Button
+                isIconOnly
+                className={`absolute -top-2 -right-2 z-20 ${index === showXButton ? 'flex' : 'hidden'}`}
+                radius='full'
+                size='sm'
+                color='danger'
+                onPress={() => deleteImage(index)}
+              >
+                <XMarkIcon className='w-4 h-4' />
+              </Button>
+            </div>
           </div>
         );
       })}

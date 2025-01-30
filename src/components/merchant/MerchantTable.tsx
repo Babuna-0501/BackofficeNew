@@ -8,6 +8,7 @@ import { changePathAction } from '@/app/actions/main';
 import { MERCHANTS_COLUMNS } from '@/configs';
 import MerchantFilterForm from '@/components/merchant/MerchantFilterForm';
 import CoreGroupImages from '@/components/core/CoreGroupImages';
+import CoreDateComponent from '@/components/core/CoreDateComponent';
 
 interface MerchantTableProps {
   merchants: MerchantType[];
@@ -23,6 +24,9 @@ const MerchantTable: FunctionComponent<MerchantTableProps> = props => {
     const cellValue = getValueByPath(merchant, columnKey.toString());
 
     switch (columnKey) {
+      case 'createdAt':
+        return <CoreDateComponent serverDate={cellValue} />;
+
       case 'logo':
         return <CoreGroupImages images={[cellValue]} />;
 

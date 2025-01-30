@@ -92,27 +92,28 @@ const AddBrandBanner: FunctionComponent<AddBrandBannerProps> = ({ items, setBann
   return (
     <div className='grid grid-cols-3 gap-3'>
       {banners.map((banner, index) => (
-        <div
-          key={index}
-          className={cn('relative hover:border-primary rounded-md border w-full h-40 flex items-center justify-center')}
-          onMouseEnter={() => setShowXButton(index)}
-          onMouseLeave={() => setShowXButton(null)}
-          onClick={() => editBanner(banner, index)}
-        >
-          <div className={cn('w-full h-full')}>
-            <CoreImage src={replaceMediaUrl(banner.file)} />
-          </div>
-
-          <Button
-            isIconOnly
-            className={`absolute -top-2 -right-2 z-20 ${index === showXButton ? 'flex' : 'hidden'}`}
-            radius='full'
-            size='sm'
-            color='danger'
-            onPress={() => deleteImage(index)}
+        <div key={index} className='relative'>
+          <div
+            className={cn('hover:border-primary rounded-md border w-full h-40 flex items-center justify-center overflow-hidden')}
+            onMouseEnter={() => setShowXButton(index)}
+            onMouseLeave={() => setShowXButton(null)}
+            onClick={() => editBanner(banner, index)}
           >
-            <XMarkIcon className='w-4 h-4' />
-          </Button>
+            <div className={cn('w-full h-full')}>
+              <CoreImage src={replaceMediaUrl(banner.file)} />
+            </div>
+
+            <Button
+              isIconOnly
+              className={`absolute -top-2 -right-2 z-20 ${index === showXButton ? 'flex' : 'hidden'}`}
+              radius='full'
+              size='sm'
+              color='danger'
+              onPress={() => deleteImage(index)}
+            >
+              <XMarkIcon className='w-4 h-4' />
+            </Button>
+          </div>
         </div>
       ))}
 

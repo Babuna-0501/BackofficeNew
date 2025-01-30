@@ -15,6 +15,11 @@ export const isActiveMap: Record<string, string> = {
   false: 'Идэвхгүй'
 };
 
+export const isTypeMap: Record<string, string> = {
+  brand: 'Brand',
+  product: 'Product'
+};
+
 export const isCheckedMap: Record<string, string> = {
   true: 'Тийм',
   false: 'Үгүй'

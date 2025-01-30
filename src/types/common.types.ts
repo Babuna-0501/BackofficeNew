@@ -5,7 +5,7 @@ export type ParamsType = Promise<{ id: string }>;
 export type SearchParamsType = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export type SearchParamsFilterType = {
-  [key: string]: string | string[] | number | undefined;
+  [key: string]: string | string[] | number | undefined | boolean;
 };
 
 export type FieldErrorType = { message: string; field?: string };

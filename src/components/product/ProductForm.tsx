@@ -1,7 +1,7 @@
 'use client';
 
 import { objectToArray, replaceUploadingMediaUrl, toastMessage, tr } from '@/utils';
-import { Card, CardBody, Form, Input, Select, SelectItem } from '@heroui/react';
+import { Card, CardBody, Form, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import { FunctionComponent, useState } from 'react';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { errorMessageMap, isActiveMap, isCheckedMap } from '@/configs';
@@ -260,6 +260,24 @@ const ProductForm: FunctionComponent<ProductFormProps> = ({ product, supplierId,
               {option => <SelectItem key={option.key}>{option.value}</SelectItem>}
             </Select>
           </div>
+
+          <Textarea
+            isRequired
+            type='text'
+            name='description'
+            variant='bordered'
+            labelPlacement='outside'
+            label={tr('Бүтээгдэхүүний дэлгэрэнгүй')}
+            defaultValue={product?.description}
+            placeholder={tr('Бүтээгдэхүүний дэлгэрэнгүй')}
+            classNames={{
+              label: 'text-xs font-medium',
+              helperWrapper: 'absolute -bottom-5 left-0'
+            }}
+            validate={value => {
+              if (!value) return errorMessageMap['required'];
+            }}
+          />
         </CardBody>
       </Card>
 

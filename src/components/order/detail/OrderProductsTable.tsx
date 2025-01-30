@@ -49,6 +49,8 @@ const OrderProductsTable: FunctionComponent<OrderProductsTableProps> = ({ produc
       columns={ORDER_PRODUCTS_COLUMNS}
       renderCell={renderCell}
       onRowAction={key => changePathAction(`/product/${key}`)}
+      total={products.length}
+      currentPage={1}
     />
   );
 };

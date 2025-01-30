@@ -5,7 +5,7 @@ import CoreSubmitButton from '@/components/core/CoreSubmitButton';
 import { errorMessageMap } from '@/configs';
 import { CityType, MerchantType } from '@/types';
 import { toastMessage, tr } from '@/utils';
-import { Form, Input, Textarea } from '@heroui/react';
+import { Form, Input } from '@heroui/react';
 import { FunctionComponent } from 'react';
 import CoreAddressFormSection from '@/components/core/CoreAddressFormSection';
 
@@ -35,8 +35,8 @@ const MerchantForm: FunctionComponent<MerchantFormProps> = ({ supplierId, mercha
       <Input
         type='text'
         isRequired
-        defaultValue={merchant?.businessName}
-        name='businessName'
+        defaultValue={merchant?.name}
+        name='name'
         variant='bordered'
         labelPlacement='outside'
         label={tr('Харилцагчийн нэр')}
@@ -49,78 +49,45 @@ const MerchantForm: FunctionComponent<MerchantFormProps> = ({ supplierId, mercha
         }}
       />
 
-      <Input
-        type='text'
-        isRequired
-        defaultValue={merchant?.name}
-        name='name'
-        variant='bordered'
-        labelPlacement='outside'
-        label={tr('Салбарын нэр')}
-        placeholder={tr('Салбарын нэр')}
-        classNames={{
-          label: 'text-xs font-medium'
-        }}
-        validate={value => {
-          if (!value) return errorMessageMap['required'];
-        }}
-      />
+      <div className='grid grid-cols-2 gap-4 w-full'>
+        <Input
+          type='text'
+          defaultValue={merchant?.regNo}
+          isRequired
+          name='regNo'
+          variant='bordered'
+          label={tr('Харилцагчийн регистр')}
+          labelPlacement='outside'
+          placeholder={tr('Харилцагчийн регистр')}
+          classNames={{
+            label: 'text-xs font-medium',
+            helperWrapper: 'absolute -bottom-5 left-0'
+          }}
+          validate={value => {
+            if (!value) return errorMessageMap['required'];
+          }}
+        />
 
-      <Input
-        type='text'
-        defaultValue={merchant?.regNo}
-        isRequired
-        name='regNo'
-        variant='bordered'
-        label={tr('Харилцагчийн регистр')}
-        labelPlacement='outside'
-        placeholder={tr('Харилцагчийн регистр')}
-        classNames={{
-          label: 'text-xs font-medium',
-          helperWrapper: 'absolute -bottom-5 left-0'
-        }}
-        validate={value => {
-          if (!value) return errorMessageMap['required'];
-        }}
-      />
-
-      <Input
-        type='text'
-        defaultValue={merchant?.phone}
-        isRequired
-        name='phone'
-        variant='bordered'
-        label={tr('Харилцагчийн утас')}
-        labelPlacement='outside'
-        placeholder={tr('Харилцагчийн утас')}
-        classNames={{
-          label: 'text-xs font-medium',
-          helperWrapper: 'absolute -bottom-5 left-0'
-        }}
-        validate={value => {
-          if (!value) return errorMessageMap['required'];
-        }}
-      />
+        <Input
+          type='text'
+          defaultValue={merchant?.phone}
+          isRequired
+          name='phone'
+          variant='bordered'
+          label={tr('Харилцагчийн утас')}
+          labelPlacement='outside'
+          placeholder={tr('Харилцагчийн утас')}
+          classNames={{
+            label: 'text-xs font-medium',
+            helperWrapper: 'absolute -bottom-5 left-0'
+          }}
+          validate={value => {
+            if (!value) return errorMessageMap['required'];
+          }}
+        />
+      </div>
 
       <CoreAddressFormSection locations={locations} item={merchant} />
-
-      <Textarea
-        isRequired
-        type='text'
-        name='address'
-        variant='bordered'
-        labelPlacement='outside'
-        label={tr('Дэлгэрэнгүй хаяг')}
-        defaultValue={merchant?.address}
-        placeholder={tr('Дэлгэрэнгүй хаяг')}
-        classNames={{
-          label: 'text-xs font-medium',
-          helperWrapper: 'absolute -bottom-5 left-0'
-        }}
-        validate={value => {
-          if (!value) return errorMessageMap['required'];
-        }}
-      />
 
       <CoreSubmitButton text='Хадгалах' />
     </Form>

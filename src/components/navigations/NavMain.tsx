@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 import { cn } from '@/utils';
-import { SupplierType } from '@/types';
 import CoreUserDropDown from '@/components/core/CoreUserDropDown';
 import CoreThemeSwitcher from '@/components/core/CoreThemeSwitcher';
 import CoreSelectSupplier from '@/components/core/CoreSelectSupplier';
@@ -11,20 +10,21 @@ import BrandSections from '@/components/navigations/sections/BrandSections';
 import CategorySections from '@/components/navigations/sections/CategorySections';
 import MerchantSections from '@/components/navigations/sections/MerchantSections';
 import SupplierSections from '@/components/navigations/sections/SupplierSections';
+import FeaturedSections from '@/components/navigations/sections/FeaturedSections';
 
 interface NavMainProps {
   isOpen: boolean;
-  suppliers: SupplierType[];
   supplierId: string;
 }
 
 const NavMain: FunctionComponent<NavMainProps> = props => {
-  const { isOpen, suppliers, supplierId } = props;
+  const { isOpen, supplierId } = props;
 
   const pathname = usePathname();
 
   const menuSectionsMap: { [key: string]: React.ReactNode } = {
     brand: <BrandSections />,
+    featured: <FeaturedSections />,
     category: <CategorySections />,
     merchant: <MerchantSections />,
     order: <OrderSections />,
@@ -41,7 +41,7 @@ const NavMain: FunctionComponent<NavMainProps> = props => {
         isOpen ? 'pl-60' : 'pl-20'
       )}
     >
-      <CoreSelectSupplier suppliers={suppliers} supplierId={supplierId} />
+      <CoreSelectSupplier supplierId={supplierId} />
 
       {menuSectionsMap[generalPath]}
 
