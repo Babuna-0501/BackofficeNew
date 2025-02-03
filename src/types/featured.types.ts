@@ -1,6 +1,7 @@
 export type FeaturedType = {
   supplierId: string;
   type: string;
+  supplier: string;
   itemId: string;
   startAt: Date | string;
   endAt: Date | string;

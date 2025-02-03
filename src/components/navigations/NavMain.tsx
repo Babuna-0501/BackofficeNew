@@ -11,14 +11,15 @@ import CategorySections from '@/components/navigations/sections/CategorySections
 import MerchantSections from '@/components/navigations/sections/MerchantSections';
 import SupplierSections from '@/components/navigations/sections/SupplierSections';
 import FeaturedSections from '@/components/navigations/sections/FeaturedSections';
+import { SupplierType } from '@/types';
 
 interface NavMainProps {
   isOpen: boolean;
-  supplierId: string;
+  supplier?: SupplierType;
 }
 
 const NavMain: FunctionComponent<NavMainProps> = props => {
-  const { isOpen, supplierId } = props;
+  const { isOpen, supplier } = props;
 
   const pathname = usePathname();
 
@@ -41,7 +42,7 @@ const NavMain: FunctionComponent<NavMainProps> = props => {
         isOpen ? 'pl-60' : 'pl-20'
       )}
     >
-      <CoreSelectSupplier supplierId={supplierId} />
+      <CoreSelectSupplier supplier={supplier} />
 
       {menuSectionsMap[generalPath]}
 

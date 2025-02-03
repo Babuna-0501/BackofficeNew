@@ -30,27 +30,10 @@ const FeaturedForm: FunctionComponent<FeaturedFormProps> = ({ brand, product , s
   };
 
   return (
-    <Form onSubmit={onSubmit} className='flex flex-col gap-4' validationBehavior='native'>
-      <Input
-        type='text'
-        defaultValue=''
-        isRequired
-        name='name'
-        variant='bordered'
-        labelPlacement='outside'
-        label={tr('нэр')}
-        placeholder={tr('нэр')}
-        classNames={{
-          label: 'text-xs font-medium'
-        }}
-        validate={value => {
-          if (!value) return errorMessageMap['required'];
-        }}
-      />
-
-
+    <Form className='flex flex-col justify-center gap-4 items-center'>
       <CoreSubmitButton text='Хадгалах' />
     </Form>
+   
   );
 };
 

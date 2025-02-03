@@ -1,4 +1,4 @@
-import FeaturedDetailBoard from '@/components/featured/detail/FeaturedDetailBoard';
+import FeaturedDetailBoard from '@/components/featured/detail/FeaturedCreateBoardFilter';
 import { getFeaturedOne } from '@/services';
 import { FeaturedType, ParamsType } from '@/types';
 import { FunctionComponent } from 'react';
