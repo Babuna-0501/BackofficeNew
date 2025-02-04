@@ -9,7 +9,7 @@ import { FeaturedType, TableItemType } from '@/types';
 import {isActiveMap, FEATURED_COLUMNS } from '@/configs';
 import FeaturedFilterForm from '@/components/featured/FeaturedFilterForm';
 import CoreDateComponent from '@/components/core/CoreDateComponent';
-import CoreGroupImages from '../core/CoreGroupImages';
+import CoreGroupImages from '@/components/core/CoreGroupImages';
 
 
 
