@@ -34,7 +34,6 @@ export async function fetchSupplierData(supplierId: string) {
   try {
     const productRes = await getProducts({ supplierId });
     const brandRes = await getBrandsAction({ supplierId });
-
     return {
       products: productRes.data,
       brands: brandRes.data,

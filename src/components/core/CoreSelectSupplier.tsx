@@ -6,13 +6,15 @@ import { Autocomplete, AutocompleteItem } from '@heroui/react';
 import CoreNotFound from '@/components/core/CoreNotFound';
 import { useInfiniteScroll } from '@heroui/use-infinite-scroll';
 import { useSuppliers } from '@/hooks';
+import { SupplierType } from '@/types';
+import CoreLoading from '@/components/core/CoreLoading';
 
 interface CoreSelectSupplierProps {
-  supplierId: string;
+  supplier?: SupplierType;
 }
 
 const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => {
-  const { supplierId } = props;
+  const { supplier } = props;
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -58,13 +60,21 @@ const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => 
     removeSupplierAction(pathname);
   };
 
+  const onInputChange = (inputValue: string) => {
+    if (!inputValue) onClear();
+
+    onSearchValue(inputValue);
+  };
+
+  const defaultItems = supplier ? (items.some(item => item.id === supplier.id) ? items : [supplier, ...items]) : items;
+
   return (
     <Autocomplete
       className='max-w-xs'
-      defaultSelectedKey={supplierId}
-      defaultItems={items}
+      defaultSelectedKey={supplier?.id}
+      defaultItems={defaultItems}
       isLoading={isLoading}
-      onInputChange={onSearchValue}
+      onInputChange={onInputChange}
       color='primary'
       label={tr('-- Нийлүүлэгч сонгох --')}
       variant='flat'
@@ -76,10 +86,10 @@ const CoreSelectSupplier: FunctionComponent<CoreSelectSupplierProps> = props => 
         onPress: onClear
       }}
       listboxProps={{
-        emptyContent: <CoreNotFound text='Нийлүүлэгч олдсонгүй' />
+        emptyContent: isLoading ? <CoreLoading /> : <CoreNotFound text='Нийлүүлэгч олдсонгүй' />
       }}
       scrollShadowProps={{
-        isEnabled: false
+        isEnabled: isLoading
       }}
     >
       {item => (

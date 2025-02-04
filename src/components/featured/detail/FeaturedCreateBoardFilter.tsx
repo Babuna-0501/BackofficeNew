@@ -1,13 +1,13 @@
 "use client";
+
 import {
   createFeaturedAction,
   fetchSupplierData,
+  updateFeaturedAction,
 } from "@/app/actions/featured";
-import CoreComingSoon from "@/components/core/CoreComingSoon";
 import CoreNotFound from "@/components/core/CoreNotFound";
-import { useBrands } from "@/hooks";
-import { createFeatured, getProducts } from "@/services";
-import { BrandType, FeaturedType, ProductType } from "@/types";
+import CoreUploadImages from "@/components/core/CoreUploadImages";
+import { FeaturedType, ProductType } from "@/types";
 import { formDataToObject, tr } from "@/utils";
 import {
   Autocomplete,
@@ -17,31 +17,26 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
-import { div } from "framer-motion/client";
-import {
-  FunctionComponent,
-  Key,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import { getLocalTimeZone } from "@internationalized/date";
+import { FunctionComponent, Key, useEffect, useState } from "react";
 import CoreSubmitButton from "@/components/core/CoreSubmitButton";
 import { FunnelIcon } from "@heroicons/react/24/outline";
-import { getBrandsAction } from "@/app/actions/brand";
+import { parseDate } from "@internationalized/date";
 interface FeaturedCreateBoardFilterProps {
   supplierId: string;
+  featuredOne?: FeaturedType;
   //   create: (type: string, itemId: string, start: Date, end: Date) => void;
 }
+
 const FeaturedCreateBoardFilter: FunctionComponent<
   FeaturedCreateBoardFilterProps
 > = (props) => {
-  const { supplierId } = props;
-  const [select, setSelect] = useState("product");
-
+  const { supplierId, featuredOne } = props;
+  const [select, setSelect] = useState(featuredOne?.type ?? "product");
   const [products, setProducts] = useState<ProductType[]>([]);
   const [brands, setBrands] = useState<any[]>([]);
+  const [images, setImages] = useState<string[]>(
+    featuredOne?.image ? [featuredOne.image] : []
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -52,18 +47,15 @@ const FeaturedCreateBoardFilter: FunctionComponent<
       setBrands(data.brands);
       setLoading(false);
     };
-
     fetchData();
   }, [supplierId]);
+
   const onClear = () => {
     // removeSupplierAction(pathname);
   };
 
-  const [items, setItems] = useState<any[]>(products);
-  const [item, setItem] = useState<string | null>(null);
-
+  const [item, setItem] = useState<string>(featuredOne?.id ?? "");
   const onChange = (e: string) => {
-    e == "product" ? setItems(products) : setItems(brands);
     setSelect(e);
   };
 
@@ -73,7 +65,7 @@ const FeaturedCreateBoardFilter: FunctionComponent<
 
   const submit = async (formData: FormData) => {
     const { startDate, endDate } = formDataToObject(formData);
-    const body = {
+    let body: any = {
       supplierId: supplierId,
       type: select,
       image:
@@ -84,16 +76,24 @@ const FeaturedCreateBoardFilter: FunctionComponent<
       isActive: true,
       priority: 2,
     };
-    console.log(body);
-    await createFeaturedAction(body).then((d) => console.log(d));
+    if (featuredOne)
+      body = {
+        startAt: body.startAt,
+        endAt: body.endAt,
+      };
+    featuredOne
+      ? await updateFeaturedAction(body, featuredOne.id).then((d) =>
+          console.log(d)
+        )
+      : await createFeaturedAction(body).then((d) => console.log(d));
   };
   return (
-    <form className="flex flex-col gap-4" action={submit}>
+    <Form className="flex flex-col gap-4" action={submit}>
       <Select
         aria-label="core"
         aria-hidden="false"
         name="isActive"
-        defaultSelectedKeys={"all"}
+        defaultSelectedKeys={[select]}
         placeholder="--"
         value={select}
         label={tr("Сонгох")}
@@ -118,14 +118,15 @@ const FeaturedCreateBoardFilter: FunctionComponent<
       </Select>
       <Autocomplete
         className="max-w-xs"
-        defaultSelectedKey={supplierId}
-        defaultItems={items}
+        defaultSelectedKey={item}
+        // selectedKey={item}
+        defaultItems={select == "product" ? products : brands}
         isLoading={loading}
         color="primary"
         label={tr("-- Сонгох --")}
         variant="flat"
         radius="none"
-        value={item == null ? undefined : item}
+        // value={item}
         onSelectionChange={onSelectionChange}
         clearButtonProps={{
           onPress: onClear,
@@ -150,22 +151,37 @@ const FeaturedCreateBoardFilter: FunctionComponent<
         )}
       </Autocomplete>
       <DateRangePicker
-        // isRequired
-        // aria-label="date"
         label="Эхлэх, дуусах огноо"
+        defaultValue={{
+          start: parseDate(
+            featuredOne?.startAt.toString()?.split("T")[0] ??
+              new Date().toString()
+          ),
+          end: parseDate(
+            featuredOne?.endAt.toString()?.split("T")[0] ??
+              new Date().toString()
+          ),
+        }}
         variant="bordered"
         startName="startDate"
         endName="endDate"
         errorMessage={tr("Өдөр сонгоно уу")}
         calendarProps={{ disableAnimation: true }}
       />
+      {select == "brand" && (
+        <CoreUploadImages
+          images={images}
+          setImages={setImages}
+          className="my-custom-class"
+          maxImages={1}
+        />
+      )}
       <CoreSubmitButton
         text="Хайх"
         startContent={<FunnelIcon className="w-4 h-4" />}
         className="w-full"
       />
-    </form>
+    </Form>
   );
 };
-
 export default FeaturedCreateBoardFilter;

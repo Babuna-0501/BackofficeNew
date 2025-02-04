@@ -3,14 +3,15 @@
 import { FunctionComponent, ReactNode, useState } from 'react';
 import NavMain from '@/components/navigations/NavMain';
 import NavSide from '@/components/navigations/NavSide';
+import { SupplierType } from '@/types';
 
 interface NavContainerProps {
   children: ReactNode;
-  supplierId: string;
+  supplier?: SupplierType;
 }
 
 const NavContainer: FunctionComponent<NavContainerProps> = props => {
-  const { children, supplierId } = props;
+  const { children, supplier } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -22,7 +23,7 @@ const NavContainer: FunctionComponent<NavContainerProps> = props => {
 
       <div className='flex-1 flex flex-col h-full w-full overflow-hidden'>
         <div className='h-14'>
-          <NavMain isOpen={isOpen} supplierId={supplierId} />
+          <NavMain isOpen={isOpen} supplier={supplier} />
         </div>
 
         <div className='py-4 px-8 flex-1 overflow-auto'>{children}</div>

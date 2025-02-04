@@ -24,6 +24,9 @@ const MerchantTable: FunctionComponent<MerchantTableProps> = props => {
     const cellValue = getValueByPath(merchant, columnKey.toString());
 
     switch (columnKey) {
+      case 'tradeShops':
+        return cellValue?.map((item: { holdingKey: string }, index: number) => `${index === 0 ? '' : ','} ${item.holdingKey}`);
+
       case 'createdAt':
         return <CoreDateComponent serverDate={cellValue} />;
 
