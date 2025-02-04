@@ -1,37 +1,32 @@
 "use client";
 
-import { createFeaturedAction, fetchSupplierData } from "@/app/actions/featured";
+import { createFeaturedAction, fetchSupplierData,} from "@/app/actions/featured";
 import CoreNotFound from "@/components/core/CoreNotFound";
 import CoreUploadImages from "@/components/core/CoreUploadImages";
 import { ProductType } from "@/types";
 import { formDataToObject, tr } from "@/utils";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  DateRangePicker,
-  Form,
-  Select,
-  SelectItem,
-} from "@heroui/react";
-import { FunnelIcon } from "@heroicons/react/24/outline";
-import { FunctionComponent, Key, useEffect, useState } from "react";
+import { Autocomplete, AutocompleteItem, DateRangePicker, Form, Select, SelectItem } from "@heroui/react";
+import { FunctionComponent, Key, useEffect, useState,} from "react";
 import CoreSubmitButton from "@/components/core/CoreSubmitButton";
+import { FunnelIcon } from "@heroicons/react/24/outline";
+
+
 
 interface FeaturedCreateBoardFilterProps {
   supplierId: string;
+  //   create: (type: string, itemId: string, start: Date, end: Date) => void;
 }
 
-const FeaturedCreateBoardFilter: FunctionComponent<
-  FeaturedCreateBoardFilterProps
-> = ({ supplierId }) => {
+
+const FeaturedCreateBoardFilter: FunctionComponent<FeaturedCreateBoardFilterProps> = (props) => {
+  
+  const { supplierId } = props;
   const [select, setSelect] = useState("product");
   const [products, setProducts] = useState<ProductType[]>([]);
   const [brands, setBrands] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<string[]>([]); 
-  const [items, setItems] = useState<any[]>(products);
-  const [item, setItem] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -42,30 +37,29 @@ const FeaturedCreateBoardFilter: FunctionComponent<
     };
     fetchData();
   }, [supplierId]);
-
+  
   const onClear = () => {
-    // Implement the clear functionality if needed
+    // removeSupplierAction(pathname);
   };
 
+  const [items, setItems] = useState<any[]>(products);
+  const [item, setItem] = useState<string | null>(null);
   const onChange = (e: string) => {
-    if (e === "product") {
-      setItems(products);
-    } else {
-      setItems(brands);
-    }
+    e == "product" ? setItems(products) : setItems(brands);
     setSelect(e);
   };
 
   const onSelectionChange = (key: Key | null) => {
-    if (key) setItem(key as string);
+    key && setItem(key as string);
   };
 
   const submit = async (formData: FormData) => {
     const { startDate, endDate } = formDataToObject(formData);
     const body = {
-      supplierId,
+      supplierId: supplierId,
       type: select,
-      image: images.length > 0 ? images[0] : "", 
+      image:
+        "https://pics.ebazaar.link/media/product/27d2e8954f9d8cbf9d23f500ae466f1e24e823c7171f95a87da2f28ffd0e.jpg",
       itemId: item,
       startAt: new Date(startDate as string).toISOString(),
       endAt: new Date(endDate as string).toISOString(),
@@ -123,9 +117,7 @@ const FeaturedCreateBoardFilter: FunctionComponent<
         listboxProps={{
           emptyContent: (
             <CoreNotFound
-              text={`${
-                select === "product" ? "Бүтээгдэхүүн" : "Бранд"
-              } олдсонгүй`}
+              text={`${select == "product" ? "Бүтээгдэхүүн" : "Бранд" } олдсонгүй`}
             />
           ),
         }}
@@ -139,7 +131,6 @@ const FeaturedCreateBoardFilter: FunctionComponent<
           </AutocompleteItem>
         )}
       </Autocomplete>
-
       <DateRangePicker
         label="Эхлэх, дуусах огноо"
         variant="bordered"
@@ -148,15 +139,12 @@ const FeaturedCreateBoardFilter: FunctionComponent<
         errorMessage={tr("Өдөр сонгоно уу")}
         calendarProps={{ disableAnimation: true }}
       />
-
-      {/* Image Upload Section */}
-      <CoreUploadImages
+    <CoreUploadImages
         images={images}
         setImages={setImages}
         className="my-custom-class"
-        maxImages={1} // Adjust the maximum number of images as needed
+        maxImages={1}
       />
-
       <CoreSubmitButton
         text="Хайх"
         startContent={<FunnelIcon className="w-4 h-4" />}
@@ -165,5 +153,4 @@ const FeaturedCreateBoardFilter: FunctionComponent<
     </Form>
   );
 };
-
 export default FeaturedCreateBoardFilter;

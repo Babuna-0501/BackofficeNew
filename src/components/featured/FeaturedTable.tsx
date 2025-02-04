@@ -8,8 +8,8 @@ import { changePathAction } from '@/app/actions/main';
 import { FeaturedType, TableItemType } from '@/types';
 import {isActiveMap, FEATURED_COLUMNS } from '@/configs';
 import FeaturedFilterForm from '@/components/featured/FeaturedFilterForm';
-import CoreImage from '@/components/core/CoreImage';
 import CoreDateComponent from '@/components/core/CoreDateComponent';
+import CoreGroupImages from '../core/CoreGroupImages';
 
 
 
@@ -32,9 +32,10 @@ const FeaturedTable: FunctionComponent<FeaturedTableProps> = ({featured, totalPa
           </Chip>
         );
       case 'image':
+        const images = Array.isArray(cellValue) ? cellValue : [cellValue];
         return (
           <div style={{ width: '50px', height: '50px' }}>
-            <CoreImage src={cellValue} objectFit='cover' />
+            <CoreGroupImages images={images} max={3} />
           </div>
         );
       case 'startAt':
@@ -44,8 +45,6 @@ const FeaturedTable: FunctionComponent<FeaturedTableProps> = ({featured, totalPa
         return cellValue;
     }
   }, []);
-  
-  
 
   return (
     <CoreTable

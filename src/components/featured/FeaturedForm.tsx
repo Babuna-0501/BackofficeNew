@@ -1,11 +1,9 @@
 'use client';
 
 import { FeaturedType } from '@/types';
-import { errorMessageMap, isActiveMap } from '@/configs';
-import { Form, Input, Select, SelectItem } from '@heroui/react';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import CoreSubmitButton from '@/components/core/CoreSubmitButton';
-import { objectToArray, toastMessage, tr } from '@/utils';
+import { toastMessage } from '@/utils';
 import { createBrandAction, updateBrandAction } from '@/app/actions/brand';
 
 interface FeaturedFormProps {
@@ -30,9 +28,9 @@ const FeaturedForm: FunctionComponent<FeaturedFormProps> = ({ brand, product , s
   };
 
   return (
-    <Form className='flex flex-col justify-center gap-4 items-center'>
-      <CoreSubmitButton text='Хадгалах' />
-    </Form>
+    <div className='flex flex-col justify-center items-center'>
+      <CoreSubmitButton text='Хадгалах' className='w-full'/>
+    </div> 
    
   );
 };

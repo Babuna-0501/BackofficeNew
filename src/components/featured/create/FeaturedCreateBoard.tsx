@@ -24,10 +24,9 @@ const FeaturedCreateBoard: FunctionComponent<FeaturedCreateBoardProps> = async (
           <FeaturedCreateBoardFilter
             supplierId={supplierId}
           />
+          <FeaturedForm supplierId={supplierId} />
         </div>
         </CardBody>
-          <FeaturedForm supplierId={supplierId} />
-      
       </Card>
 
     </div>
